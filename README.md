@@ -40,7 +40,7 @@ Create a .env.local file in the root directory of your project to store your env
 NEXT_PUBLIC_ALPHAVANTAGE_API_KEY=YOUR_API_KEY_HERE
 ```
 
-Note: The API key is required to fetch data from the Alpha Vantage API. You can obtain your API key by signing up at Alpha Vantage.
+Note: The API key is required to fetch data from the Alpha Vantage API. You can obtain your API key by signing up at [Alpha Vantage](https://www.alphavantage.co/documentation/).
 
 ### 4. Run the Application
 
