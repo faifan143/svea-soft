@@ -20,8 +20,8 @@ Before you begin, ensure you have met the following requirements:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/exchange-rates-dashboard.git
-cd exchange-rates-dashboard
+git clone https://github.com/faifan143/svea-soft.git
+cd svea-soft
 ```
 
 ### 2. Install Dependencies
