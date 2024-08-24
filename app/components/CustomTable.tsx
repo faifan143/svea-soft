@@ -81,9 +81,15 @@ export default function CustomTable(props: CustomTableProps) {
 
   React.useEffect(() => {
     if (currencyData) {
-      console.log(currencyData);
+      console.log("currencyData is ", currencyData);
     }
   }, [currencyData]);
+
+  React.useEffect(() => {
+    if (dateCurrencyData) {
+      console.log("dateCurrencyData is ", dateCurrencyData);
+    }
+  }, [dateCurrencyData]);
 
   if (currencyError || dateCurrencyError) {
     return (
@@ -109,7 +115,7 @@ export default function CustomTable(props: CustomTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {currencyData && props.code !== "" && (
+          {currencyData && currencyData["Realtime Currency Exchange Rate"] && (
             <TableRow>
               <TableCell>
                 {
