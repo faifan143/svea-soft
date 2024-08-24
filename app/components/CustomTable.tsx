@@ -6,9 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { formatDate } from "../utils/DateFormatter";
-const ALPHAVENTAGE_API_KEY = "PNI4XAML7ZWO4JVK";
 import useSWR from "swr";
+import { formatDate } from "../utils/DateFormatter";
+
+const ALPHAVENTAGE_API_KEY = process.env.NEXT_PUBLIC_ALPHAVENTAGE_API_KEY;
 
 interface CustomTableProps {
   code: string;
@@ -57,27 +58,44 @@ function filterTimeSeries(data: DateResponseProps, start: string, end: string) {
   return filteredData;
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url).then((res) => {
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return res.json();
+  });
 
 export default function CustomTable(props: CustomTableProps) {
-  const { data: currencyData } = useSWR(
+  const { data: currencyData, error: currencyError } = useSWR(
     `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${props.code}&to_currency=USD&apikey=${ALPHAVENTAGE_API_KEY}`,
     fetcher,
     { revalidateOnFocus: false, refreshInterval: 86400 }
   );
 
-  const { data: dateCurrencyData } = useSWR(
+  const { data: dateCurrencyData, error: dateCurrencyError } = useSWR(
     `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=USD&apikey=${ALPHAVENTAGE_API_KEY}`,
     fetcher,
     { revalidateOnFocus: false, refreshInterval: 86400 }
   );
 
   React.useEffect(() => {
-    console.log(currencyData);
+    if (currencyData) {
+      console.log(currencyData);
+    }
   }, [currencyData]);
 
-  if (!currencyData || !dateCurrencyData)
+  if (currencyError || dateCurrencyError) {
+    return (
+      <div className="text-red-600">
+        Failed to load data. Please try again later.
+      </div>
+    );
+  }
+
+  if (!currencyData || !dateCurrencyData) {
     return <div className="text-black">Loading...</div>;
+  }
 
   return (
     <TableContainer component={Paper}>
